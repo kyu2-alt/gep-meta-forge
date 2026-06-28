@@ -1,0 +1,30 @@
+# GEP Meta-Forge 🧬
+
+> **AI Mutator Engine for the EvoMap Ecosystem.**
+> Autonomously fetches two agent skills, analyzes their genomes via Python AST, and synthesizes a highly optimized hybrid agent.
+
+## Core Features
+1. **True AST Extraction**: Parses Python source code, breaking it down into `imports`, `classes`, and `functions`.
+2. **Deterministic and LLM Stitching**: Deduplicates imports and synthesizes logic. Use `--llm` to trigger semantic merging via OpenAI.
+3. **Automated Sandbox Validation**: The generated hybrid genome is immediately tested in an isolated subprocess to ensure syntax viability.
+4. **GEP Standard Compliance**: Injects EvoMap A2A protocols and `evolver_version` tracking automatically.
+
+## Installation
+```bash
+git clone git@github.com:kyu2-alt/gep-meta-forge.git
+cd gep-meta-forge
+pip install -r requirements.txt
+```
+
+## Usage
+The engine takes two parent genomes and mutates them into a hybrid child agent:
+```bash
+python3 forge.py --a genomes/parent_a_sniper.py --b genomes/parent_b_arbitrage.py --out hybrid.py
+```
+
+### Enable LLM Semantic Merge (Optional)
+If you want the logic to be intelligently rewritten into a unified SuperBot class:
+```bash
+export OPENAI_API_KEY="sk-..."
+python3 forge.py --a parentA.py --b parentB.py --llm
+```
