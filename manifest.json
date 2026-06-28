@@ -1,0 +1,9 @@
+{
+  "name": "gep-meta-forge",
+  "version": "1.0.0",
+  "description": "EvoMap GEP AI Mutator: Autonomously fetches two agent skills, analyzes their genomes via LLM, and synthesizes a highly optimized hybrid agent.",
+  "author": "kyu2-alt",
+  "evolver_version": "1.89.17",
+  "protocol": "gep-a2a",
+  "tags": ["mutator", "genetic-algorithm", "llm-synthesis", "a2a"]
+}
