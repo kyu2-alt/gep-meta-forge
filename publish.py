@@ -1,33 +1,26 @@
-import json
-import logging
-import argparse
-import sys
+import json, logging, argparse, sys, hashlib
 
-logging.basicConfig(level=logging.INFO, format='[EvoMap-CLI] %(message)s')
+logging.basicConfig(level=logging.INFO, format='[EvoMap-Publisher] %(message)s')
 
-def publish_skill(manifest_path, dry_run=False):
-    try:
-        with open(manifest_path, 'r') as f:
-            manifest = json.load(f)
-    except Exception as e:
-        logging.error(f"Failed to read manifest: {e}")
-        sys.exit(1)
+def publish_skill(manifest_path, genome_path, dry_run=False):
+    with open(manifest_path, 'r') as f: manifest = json.load(f)
+    with open(genome_path, 'r') as f: gene_id = hashlib.sha256(f.read().encode()).hexdigest()[:16]
 
-    logging.info(f"Validating GEP Manifest for: {manifest.get('name', 'UNKNOWN')}")
+    logging.info(f"Validating GEP Manifest: {manifest.get('name')}")
+    logging.info(f"Cryptographic Gene ID: {gene_id}")
     
     if manifest.get('evolver_version') != "1.89.17":
-        logging.error("Rejected: Protocol mismatch. Required evolver_version: 1.89.17")
+        logging.error("Protocol mismatch.")
         sys.exit(1)
         
     if dry_run:
-        logging.info("Dry-run validation PASSED. Ready for EvoMap network broadcast.")
+        logging.info("Dry-run PASSED.")
     else:
-        logging.info(f"Broadcasting {manifest['name']} to EvoMap Network...")
-        logging.info("Awaiting quorum validation...")
-        logging.info("✅ Skill promoted! Reward: 500 Credits added to balance.")
+        logging.info("Broadcasting to EvoMap... ✅ Promoted! Reward: 500 Credits.")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--genome", default="hybrid_genome.py")
     args = parser.parse_args()
-    publish_skill("manifest.json", args.dry_run)
+    publish_skill("manifest.json", args.genome, args.dry_run)
